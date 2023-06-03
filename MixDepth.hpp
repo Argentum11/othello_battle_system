@@ -371,7 +371,7 @@ void monteCarlo(string gameboard, int player, int iteration)
     mix_ret = flipPieces(gameboard, player, bestmoves[moveIndex]);
 }
 
-string mix(int player, int depth, int iteration, string gameboard)
+string mix_depth(int player, int depth, int iteration, string gameboard)
 {
     srand(time(0));
     // int player, depth;
