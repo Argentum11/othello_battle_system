@@ -1,6 +1,7 @@
 #include "MonteCarlo.hpp"
 #include "AlphaBetaPruning.hpp"
 #include "MixDepth.hpp"
+#include "time.h"
 
 // strategy
 #define ALPHA_BETA_PRUNING 1
@@ -88,6 +89,7 @@ int main()
 {
     string order[2] = {"first", "second"};
     int strategy[2], input_depth[2], input_iteration[2], color[2];
+    vector<double> time[2];
     color[0] = BLACK;
     color[1] = WHITE;
     cout << endl;
@@ -165,7 +167,13 @@ int main()
         string prev_board_str = "";
         while (same != 2)
         {
+            double StartTime = clock();
             board_str = run_strategy(strategy[index], color[index], input_depth[index], input_iteration[index], board_str);
+            double EndTime = clock();
+            if(game == 1)
+            {
+                time[index].push_back((EndTime - StartTime) / CLOCKS_PER_SEC);
+            }
             index = 1 - index;
             if (board_str == prev_board_str)
             {
@@ -187,4 +195,13 @@ int main()
         }
     }
     display_result(strategy, win, strategy_detail);
+    for(int i=0; i<2; i++)
+    {
+        double avg = 0;
+        for(auto j: time[i])
+        {
+            avg += j;
+        }
+        cout << avg / time[i].size() << endl;
+    }
 }

@@ -1,7 +1,13 @@
 #ifndef abmc_H // To make sure you don't declare the function more than once by including the header multiple times.
 #define abmc_H
 
-#include <bits/stdc++.h>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <string.h>
+#include <time.h>
+
 using namespace std;
 #define SIZE 6
 pair<int, int> direction[] = {
