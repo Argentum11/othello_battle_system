@@ -2,7 +2,7 @@
 #include "AlphaBetaPruning.hpp"
 #include "MixDepth.hpp"
 #include "time.h"
-
+#include "MixHue.hpp"
 // strategy
 #define ALPHA_BETA_PRUNING 1
 #define MONTE_CARLO 2
@@ -28,6 +28,7 @@ string run_strategy(int strategy, int player, int depth, int iteration, string b
     else
     {
         // TODO
+        return mixhue(player, depth, iteration, board);
     }
 }
 
@@ -97,7 +98,7 @@ int main()
     cout << endl;
     for (int i = 0; i < 2; i++)
     {
-        cout << "Please select " << order[i] << " strategy, alpha beta pruning...1/monte carlo...2/mix...3/: ";
+        cout << "Please select " << order[i] << " strategy, alpha beta pruning...1/monte carlo...2/mixdepth...3/mixhue...4/: ";
         cin >> strategy[i];
         if (strategy[i] == ALPHA_BETA_PRUNING)
         {
@@ -119,6 +120,10 @@ int main()
         else if (strategy[i] == MIX_HEURISTIC)
         {
             // TODO
+            cout << "Please enter depth: ";
+            cin >> input_depth[i];
+            cout << "Please enter iteration: ";
+            cin >> input_iteration[i];
         }
     }
     string strategy_detail[2];
