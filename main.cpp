@@ -46,10 +46,12 @@ int winner_index(string board_str, int main_board[SIZE][SIZE])
     }
 }
 
+string strategy_name[5] = {"", "alpha beta pruning", "monte carlo",
+                           "mix depth", "mix heuristic "};
+
 void display_result(int strategy[2], int win[2], string detail[2])
 {
-    string strategy_name[5] = {"", "alpha beta pruning", "monte carlo",
-                               "mix depth", "mix heuristic "};
+    
     int winner = 0;
     for (int i = 0; i < 2; i++)
     {
@@ -195,6 +197,7 @@ int main()
         }
     }
     display_result(strategy, win, strategy_detail);
+    cout<<endl;
     for(int i=0; i<2; i++)
     {
         double avg = 0;
@@ -202,6 +205,6 @@ int main()
         {
             avg += j;
         }
-        cout << avg / time[i].size() << endl;
+        cout << strategy_name[strategy[i]] << strategy_detail[i] << ": " << avg / time[i].size() << endl;
     }
 }
