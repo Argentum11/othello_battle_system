@@ -58,6 +58,29 @@ void display_result(int strategy[2], int win[2], string detail[2])
     cout << strategy_name[strategy[winner]] << detail[winner] << " wins !!!" << endl;
 }
 
+void swap(int array[2])
+{
+    int temp = array[0];
+    array[0] = array[1];
+    array[1] = temp;
+}
+
+void swap(string array[2])
+{
+    string temp = array[0];
+    array[0] = array[1];
+    array[1] = temp;
+}
+
+void swap_strategy(int strategy[2], int input_depth[2], int input_iteration[2], string strategy_detail[2], int win[2])
+{
+    swap(strategy);
+    swap(input_depth);
+    swap(input_iteration);
+    swap(strategy_detail);
+    swap(win);
+}
+
 int main()
 {
     string order[2] = {"first", "second"};
@@ -114,6 +137,10 @@ int main()
     for (int game = 1; game <= 3; game++)
     {
         cout << "Game " << game << endl;
+        if (game == 2)
+        {
+            swap_strategy(strategy, input_depth, input_iteration, strategy_detail, win);
+        }
         for (int i = 0; i < SIZE; i++)
         {
             for (int j = 0; j < SIZE; j++)
@@ -147,6 +174,10 @@ int main()
         }
         cout << endl;
         win[winner_index(board_str, main_board)]++;
+        if (game == 2)
+        {
+            swap_strategy(strategy, input_depth, input_iteration, strategy_detail, win);
+        }
     }
     display_result(strategy, win, strategy_detail);
 }
