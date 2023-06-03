@@ -114,7 +114,7 @@ int minimaxSearch(string gameboard, int originalplayer, int player, int depth, i
     if (d == 0)
     {
         // cout << flipPieces(gameboard, player, temp.second) << endl;
-        mix_ret = flipPieces(gameboard, player, temp.second);
+        mix_ret = flipPieces(gameboard, player+1, temp.second);
     }
     return temp.first;
 }

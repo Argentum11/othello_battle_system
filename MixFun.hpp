@@ -78,6 +78,16 @@ int countFlipPieces(string s, int player, string pos, int dir)
 
 string flipPieces(string s, int player, string pos)
 {
+    // cout << "gameboard1 "<< endl;
+    // for (int i = 0; i < 6; i++)
+    // {
+    //     for (int j = 0; j < 6; j++)
+    //     {
+    //         cout << s[i*6+j];
+    //     }
+    //     cout << endl;
+    // }
+    
     char board[SIZE][SIZE];
     for (int i = 0; i < SIZE; i++)
     {
@@ -108,6 +118,17 @@ string flipPieces(string s, int player, string pos)
             ret += board[i][j];
         }
     }
+    // cout << "gameboard2 "<<endl;
+    // for (int i = 0; i < 6; i++)
+    // {
+    //     for (int j = 0; j < 6; j++)
+    //     {
+    //         cout << ret[i*6+j];
+    //     }
+    //     cout << endl;
+    // }
+    // cout << "p\n";
+    // cout << player<<endl;
     return ret;
 }
 

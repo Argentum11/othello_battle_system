@@ -192,14 +192,14 @@ int main()
             }
             prev_board_str = board_str;
             // cout << board_str << endl;
-            for (int x  = 0; x < 6; x++)
-            {
-                for (int y = 0; y < 6; y++)
-                {
-                    cout << board_str[x*6+y];
-                }
-                cout << endl;
-            }
+            // for (int x  = 0; x < 6; x++)
+            // {
+            //     for (int y = 0; y < 6; y++)
+            //     {
+            //         cout << board_str[x*6+y];
+            //     }
+            //     cout << endl;
+            // }
             cout << ".";
         }
         cout << endl;

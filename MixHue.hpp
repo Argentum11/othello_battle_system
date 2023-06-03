@@ -1,11 +1,11 @@
 #ifndef MIXHUE
 #define MIXHUE
 #include <bits/stdc++.h>
-#include"MixFun.hpp"
+#include "MixFun.hpp"
 using namespace std;
 #define SIZE 6
 string mixhue_ret;
-int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int depth, int d, int prune,int iteration);
+int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int depth, int d, int prune, int iteration);
 
 int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int depth, int d, int prune, int iterations)
 {
@@ -63,7 +63,7 @@ int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int d
             }
             if (flag)
             {
-                int val = mixhue_minimaxSearch(flipPieces(gameboard, player + 1, pos), originalplayer, (!player) + 1, depth, d + 1, prune,iterations);
+                int val = mixhue_minimaxSearch(flipPieces(gameboard, player + 1, pos), originalplayer, (!player) + 1, depth, d + 1, prune, iterations);
                 if (temp.second == "")
                 {
                     temp.first = val;
@@ -110,19 +110,39 @@ int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int d
     }
     if (!canmove)
     {
-        temp = {mixhue_minimaxSearch(gameboard, originalplayer, (!player) + 1, depth, d + 1, prune,iterations), ""};
+        temp = {mixhue_minimaxSearch(gameboard, originalplayer, (!player) + 1, depth, d + 1, prune, iterations), ""};
     }
     if (d == 0)
     {
-        mixhue_ret = flipPieces(gameboard, player, temp.second);
+        mixhue_ret = flipPieces(gameboard, player+1, temp.second);
+        // cout << "gameboard1 " << endl;
+        // for (int i = 0; i < 6; i++)
+        // {
+        //     for (int j = 0; j < 6; j++)
+        //     {
+        //         cout << gameboard[i * 6 + j];
+        //     }
+        //     cout << endl;
+        // }
+        // cout << "gameboard2 " << endl;
+        // for (int i = 0; i < 6; i++)
+        // {
+        //     for (int j = 0; j < 6; j++)
+        //     {
+        //         cout << mixhue_ret[i * 6 + j];
+        //     }
+        //     cout << endl;
+        // }
+        // cout << "p\n";
+        // cout << player << endl;
     }
     return temp.first;
 }
 
-string mixhue(int player,int d,int iterations,string gameboard)
+string mixhue(int player, int d, int iterations, string gameboard)
 {
     srand(time(0));
-    mixhue_minimaxSearch(gameboard,player,player,d,0,-100,iterations);
+    mixhue_minimaxSearch(gameboard, player, player, d, 0, -100, iterations);
     return mixhue_ret;
 }
 #endif
