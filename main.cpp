@@ -4,13 +4,14 @@
 #include "time.h"
 #include "MixHue.hpp"
 #include "HistoryHeu.hpp"
+#include "test.hpp"
 // strategy
 #define ALPHA_BETA_PRUNING 1
 #define MONTE_CARLO 2
 #define MIX_DEPTH 3
 #define MIX_HEURISTIC 4
 #define HISTORY_HEURISTIC 5
-
+#define TEST 6
 string run_strategy(int strategy, int player, int depth, int iteration, string board)
 {
     if (strategy == ALPHA_BETA_PRUNING)
@@ -29,8 +30,11 @@ string run_strategy(int strategy, int player, int depth, int iteration, string b
     }
     else if (strategy == HISTORY_HEURISTIC)
     {
-        cout << "test\n";
         return history_heu(player,depth,board);
+    }
+    else if(strategy == TEST)
+    {
+        return testmain(player,depth,board);
     }
     else
     {
@@ -54,8 +58,8 @@ int winner_index(string board_str, int main_board[SIZE][SIZE])
     }
 }
 
-string strategy_name[6] = {"", "alpha beta pruning", "monte carlo",
-                           "mix depth", "mix heuristic ","history heu"};
+string strategy_name[] = {"", "alpha beta pruning", "monte carlo",
+                           "mix depth", "mix heuristic ","history heu","test"};
 
 void display_result(int strategy[2], int win[2], string detail[2])
 {
@@ -133,6 +137,11 @@ int main()
             cin >> input_iteration[i];
         }
         else if (strategy[i] == HISTORY_HEURISTIC)
+        {
+            cout << "Please enter depth: ";
+            cin >> input_depth[i];
+        }
+        else if(strategy[i] == TEST)
         {
             cout << "Please enter depth: ";
             cin >> input_depth[i];
