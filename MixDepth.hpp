@@ -185,6 +185,7 @@ string mix_depth(int player, int depth, int iteration, string gameboard)
     {
         monteCarlo(gameboard, player, iteration);
     }
+    cout << mix_ret << endl;
     return mix_ret;
 }
 #endif

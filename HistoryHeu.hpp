@@ -7,30 +7,30 @@
 #include <algorithm>
 #include <string.h>
 #include <time.h>
-#include "MixFun.hpp"
+#include"MixFun.hpp"
 using namespace std;
 #define SIZE 6
-int minimaxSearch_hue(string gameboard, int originalplayer, int player, int depth, int d, int prune);
-
-string history_hue_ret;
-
+string history_heu_ret;
 int historyTable[6][6];
 
 int minimaxSearch_hue(string gameboard, int originalplayer, int player, int depth, int d, int prune)
 {
-    
-    if (d == depth)
-    {
-        return countColorPieces(gameboard, originalplayer) - countColorPieces(gameboard, (!(originalplayer - 1)) + 1);
-    }
-    pair<int, string> temp = {0, ""};
-    vector<pair<int, int>> moves = getValidMoves(gameboard, player);
-    // cout << moves.size()  << endl;
-    player--;
+    // if (getValidMoves(gameboard, player).size() == 0)
+    // {
+    //     // cout << gameboard << endl;
+    //     history_heu_ret = gameboard;
+    //     return 0;
+    // }
     if (prune == -100 && player != originalplayer - 1)
         prune = 100;
     else if (prune == 100 && player == originalplayer - 1)
         prune = -100;
+    vector<pair<int, int>> moves = getValidMoves(gameboard, player);
+    player--;
+    if (d == depth)
+    {
+        return countColorPieces(gameboard, originalplayer) - countColorPieces(gameboard, (!(originalplayer - 1)) + 1);
+    }
     char board[SIZE][SIZE];
     for (int i = 0; i < SIZE; i++)
     {
@@ -39,7 +39,7 @@ int minimaxSearch_hue(string gameboard, int originalplayer, int player, int dept
             board[i][j] = gameboard[i * SIZE + j];
         }
     }
-
+    pair<int, string> temp = {0, ""};
     string pos = "";
     bool canmove = false;
     if (player != originalplayer - 1)
@@ -102,7 +102,6 @@ int minimaxSearch_hue(string gameboard, int originalplayer, int player, int dept
             }
         }
     }
-
     if (moves.size() == 0)
     {
         temp = {minimaxSearch_hue(gameboard, originalplayer, (!player) + 1, depth, d + 1, prune), ""};
@@ -110,11 +109,11 @@ int minimaxSearch_hue(string gameboard, int originalplayer, int player, int dept
     if (d == 0)
     {
         // cout << flipPieces(gameboard, player, temp.second) << endl;
-        
-        history_hue_ret = flipPieces(gameboard, player + 1, temp.second);
+        history_heu_ret = flipPieces(gameboard, player+1, temp.second);
     }
     return temp.first;
 }
+
 
 string history_heu(int player, int depth, string gameboard)
 {
@@ -124,31 +123,18 @@ string history_heu(int player, int depth, string gameboard)
     // cin >> depth;
     // string gameboard;
     // cin >> gameboard;
-    cout << "original\n";
-    for (int x = 0; x < 6; x++)
-    {
-        for (int y = 0; y < 6; y++)
-        {
-            cout << gameboard[x * 6 + y];
-        }
-        cout << endl;
-    }
+
     if (gameOver(gameboard))
     {
         // cout<< gameboard;
-        history_hue_ret = gameboard;
-        return history_hue_ret;
+        history_heu_ret = gameboard;
+        return history_heu_ret;
     }
+
     minimaxSearch_hue(gameboard, player, player, depth, 0, -100);
-    cout << "after\n";
-    for (int x = 0; x < 6; x++)
-    {
-        for (int y = 0; y < 6; y++)
-        {
-            cout << history_hue_ret[x * 6 + y];
-        }
-        cout << endl;
-    }
-    return history_hue_ret;
+    
+
+    cout << history_heu_ret << endl;
+    return history_heu_ret;
 }
 #endif
