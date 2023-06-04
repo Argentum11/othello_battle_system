@@ -7,20 +7,19 @@
 #include <algorithm>
 #include <string.h>
 #include <time.h>
-#include"MixFun.hpp"
+#include "MixFun.hpp"
 using namespace std;
 #define SIZE 6
 string mix_ret;
 
-
 int minimaxSearch(string gameboard, int originalplayer, int player, int depth, int d, int prune)
 {
-    if (getValidMoves(gameboard, player).size() == 0)
-    {
-        // cout << gameboard << endl;
-        mix_ret = gameboard;
-        return 0;
-    }
+    // if (getValidMoves(gameboard, player).size() == 0)
+    // {
+    //     // cout << gameboard << endl;
+    //     mix_ret = gameboard;
+    //     return 0;
+    // }
     if (prune == -100 && player != originalplayer - 1)
         prune = 100;
     else if (prune == 100 && player == originalplayer - 1)
@@ -111,7 +110,7 @@ int minimaxSearch(string gameboard, int originalplayer, int player, int depth, i
     if (d == 0)
     {
         // cout << flipPieces(gameboard, player, temp.second) << endl;
-        mix_ret = flipPieces(gameboard, player+1, temp.second);
+        mix_ret = flipPieces(gameboard, player + 1, temp.second);
     }
     return temp.first;
 }
@@ -162,7 +161,7 @@ void monteCarlo(string gameboard, int player, int iteration)
     mix_ret = flipPieces(gameboard, player, bestmoves[moveIndex]);
 }
 
-string mix_depth(int player, int depth, int iteration, string gameboard)
+string mix_depth(int player, int depth, int iteration, int order, string gameboard)
 {
     srand(time(0));
     // int player, depth;
@@ -177,15 +176,30 @@ string mix_depth(int player, int depth, int iteration, string gameboard)
         mix_ret = gameboard;
         return mix_ret;
     }
-    if (countRound(gameboard) < SIZE * SIZE / 2)
+    if (order)
     {
-        minimaxSearch(gameboard, player, player, depth, 0, -100);
+
+        if (countRound(gameboard) < SIZE * SIZE / 2)
+        {
+            minimaxSearch(gameboard, player, player, depth, 0, -100);
+        }
+        else
+        {
+            monteCarlo(gameboard, player, iteration);
+        }
     }
     else
     {
-        monteCarlo(gameboard, player, iteration);
+        if (countRound(gameboard) > SIZE * SIZE / 2)
+        {
+            minimaxSearch(gameboard, player, player, depth, 0, -100);
+        }
+        else
+        {
+            monteCarlo(gameboard, player, iteration);
+        }
     }
-    cout << mix_ret << endl;
+    // cout << mix_ret << endl;
     return mix_ret;
 }
 #endif

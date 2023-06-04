@@ -9,11 +9,11 @@ int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int d
 
 int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int depth, int d, int prune, int iterations)
 {
-    if (getValidMoves(gameboard, player).size() == 0)
-    {
-        mixhue_ret = gameboard;
-        return 0;
-    }
+    // if (getValidMoves(gameboard, player).size() == 0)
+    // {
+    //     mixhue_ret = gameboard;
+    //     return 0;
+    // }
     if (prune == -100 && player != originalplayer - 1)
         prune = 100;
     else if (prune == 100 && player == originalplayer - 1)

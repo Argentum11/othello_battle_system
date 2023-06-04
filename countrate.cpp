@@ -185,7 +185,7 @@ int main()
     }
 
     int main_board[6][6];
-    for (int game = 1; game <= 3; game++)
+    for (int game = 1; game <= 100; game++)
     {
         cout << "Game " << game << endl;
         if (game == 2)
