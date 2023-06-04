@@ -10,9 +10,6 @@
 #include"MixFun.hpp"
 using namespace std;
 #define SIZE 6
-int minimaxSearch(string gameboard, int originalplayer, int player, int depth, int d, int prune);
-double posScore(int iterations, string gameboard, int player, string pos);
-void monteCarlo(string gameboard, int player);
 string mix_ret;
 
 

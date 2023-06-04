@@ -115,26 +115,6 @@ int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int d
     if (d == 0)
     {
         mixhue_ret = flipPieces(gameboard, player+1, temp.second);
-        // cout << "gameboard1 " << endl;
-        // for (int i = 0; i < 6; i++)
-        // {
-        //     for (int j = 0; j < 6; j++)
-        //     {
-        //         cout << gameboard[i * 6 + j];
-        //     }
-        //     cout << endl;
-        // }
-        // cout << "gameboard2 " << endl;
-        // for (int i = 0; i < 6; i++)
-        // {
-        //     for (int j = 0; j < 6; j++)
-        //     {
-        //         cout << mixhue_ret[i * 6 + j];
-        //     }
-        //     cout << endl;
-        // }
-        // cout << "p\n";
-        // cout << player << endl;
     }
     return temp.first;
 }

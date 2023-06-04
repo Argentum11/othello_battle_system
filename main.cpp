@@ -3,11 +3,13 @@
 #include "MixDepth.hpp"
 #include "time.h"
 #include "MixHue.hpp"
+#include "HistoryHeu.hpp"
 // strategy
 #define ALPHA_BETA_PRUNING 1
 #define MONTE_CARLO 2
 #define MIX_DEPTH 3
 #define MIX_HEURISTIC 4
+#define HISTORY_HEURISTIC 5
 
 string run_strategy(int strategy, int player, int depth, int iteration, string board)
 {
@@ -24,6 +26,10 @@ string run_strategy(int strategy, int player, int depth, int iteration, string b
     else if (strategy == MIX_DEPTH)
     {
         return mix_depth(player, depth, iteration, board);
+    }
+    else if (strategy == HISTORY_HEURISTIC)
+    {
+        return history_heu(player,depth,board);
     }
     else
     {
@@ -47,8 +53,8 @@ int winner_index(string board_str, int main_board[SIZE][SIZE])
     }
 }
 
-string strategy_name[5] = {"", "alpha beta pruning", "monte carlo",
-                           "mix depth", "mix heuristic "};
+string strategy_name[6] = {"", "alpha beta pruning", "monte carlo",
+                           "mix depth", "mix heuristic ","history heu"};
 
 void display_result(int strategy[2], int win[2], string detail[2])
 {
@@ -125,6 +131,11 @@ int main()
             cout << "Please enter iteration: ";
             cin >> input_iteration[i];
         }
+        else if (strategy[i] == HISTORY_HEURISTIC)
+        {
+            cout << "Please enter depth: ";
+            cin >> input_depth[i];
+        }
     }
     string strategy_detail[2];
     for (int i = 0; i < 2; i++)
@@ -200,7 +211,7 @@ int main()
             //     }
             //     cout << endl;
             // }
-            cout << ".";
+            // cout << ".";
         }
         cout << endl;
         win[winner_index(board_str, main_board)]++;
