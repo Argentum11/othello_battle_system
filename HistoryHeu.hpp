@@ -18,6 +18,7 @@ int historyTable[6][6];
 
 int minimaxSearch_hue(string gameboard, int originalplayer, int player, int depth, int d, int prune)
 {
+    
     if (d == depth)
     {
         return countColorPieces(gameboard, originalplayer) - countColorPieces(gameboard, (!(originalplayer - 1)) + 1);
@@ -109,6 +110,7 @@ int minimaxSearch_hue(string gameboard, int originalplayer, int player, int dept
     if (d == 0)
     {
         // cout << flipPieces(gameboard, player, temp.second) << endl;
+        
         history_hue_ret = flipPieces(gameboard, player + 1, temp.second);
     }
     return temp.first;
@@ -122,6 +124,7 @@ string history_heu(int player, int depth, string gameboard)
     // cin >> depth;
     // string gameboard;
     // cin >> gameboard;
+    cout << "original\n";
     for (int x = 0; x < 6; x++)
     {
         for (int y = 0; y < 6; y++)
@@ -137,7 +140,15 @@ string history_heu(int player, int depth, string gameboard)
         return history_hue_ret;
     }
     minimaxSearch_hue(gameboard, player, player, depth, 0, -100);
-
+    cout << "after\n";
+    for (int x = 0; x < 6; x++)
+    {
+        for (int y = 0; y < 6; y++)
+        {
+            cout << history_hue_ret[x * 6 + y];
+        }
+        cout << endl;
+    }
     return history_hue_ret;
 }
 #endif

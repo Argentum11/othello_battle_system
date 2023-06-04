@@ -29,6 +29,7 @@ string run_strategy(int strategy, int player, int depth, int iteration, string b
     }
     else if (strategy == HISTORY_HEURISTIC)
     {
+        cout << "test\n";
         return history_heu(player,depth,board);
     }
     else
