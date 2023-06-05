@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <time.h>
 /* Color */
 #define BLACK 1 /* player 1 */
 #define WHITE 2 /* player 2 */
@@ -59,7 +60,7 @@ string output_board(int board[6][6])
             int current_piece = board[i][j];
             if (current_piece == EMPTY)
             {
-                output +='-';
+                output += '-';
             }
             else if (current_piece == BLACK)
             {
@@ -418,6 +419,34 @@ int max_value(int current_depth, int target_dept, int alpha, int beta, int board
         Grid *current_grid = grid_list;
         while (current_grid != NULL)
         {
+            //  random for same value grid
+            int highest_score = current_grid->score, same_score_grid = 0;
+            Grid *tmp = current_grid->next;
+            while (tmp != NULL)
+            {
+                if (tmp->score == highest_score)
+                {
+                    same_score_grid++;
+                    tmp = tmp->next;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            // target_position_in_linked_list
+            int target_position = 0;
+            if (same_score_grid > 0)
+            {
+                target_position = rand() % same_score_grid;
+            }
+            // go to target position
+            int current_position = 0;
+            for (int i = 0; i < target_position; i++)
+            {
+                current_grid = current_grid->next;
+            }
+
             int new_board[6][6];
             copy_board(board, new_board);
             flip_pieces(new_board, player_color, current_grid);
@@ -466,6 +495,34 @@ int min_value(int current_depth, int target_dept, int alpha, int beta, int board
         Grid *current_grid = grid_list;
         while (current_grid != NULL)
         {
+            //  random for same value grid
+            int lowest_score = current_grid->score, same_score_grid = 0;
+            Grid *tmp = current_grid->next;
+            while (tmp != NULL)
+            {
+                if (tmp->score == lowest_score)
+                {
+                    same_score_grid++;
+                    tmp = tmp->next;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            // target_position_in_linked_list
+            int target_position = 0;
+            if (same_score_grid > 0)
+            {
+                target_position = rand() % same_score_grid;
+            }
+            // go to target position
+            int current_position = 0;
+            for (int i = 0; i < target_position; i++)
+            {
+                current_grid = current_grid->next;
+            }
             int new_board[6][6];
             copy_board(board, new_board);
             flip_pieces(new_board, player_color, current_grid);
@@ -499,6 +556,7 @@ void run_alpha_beta_pruning(int target_depth, int board[6][6], int player_color)
 
 string alpha_beta_pruning(int player_color, int depth, string board_str)
 {
+    srand(time(0));
     int board[6][6];
     input_board(board_str, board);
 
