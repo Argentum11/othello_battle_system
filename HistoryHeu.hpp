@@ -21,12 +21,12 @@ int minimaxSearch_hue(string gameboard, int originalplayer, int player, int dept
     //     history_heu_ret = gameboard;
     //     return 0;
     // }
+    vector<pair<int, int>> moves = getValidMoves(gameboard, player);
+    player--;
     if (prune == -100 && player != originalplayer - 1)
         prune = 100;
     else if (prune == 100 && player == originalplayer - 1)
         prune = -100;
-    vector<pair<int, int>> moves = getValidMoves(gameboard, player);
-    player--;
     if (d == depth)
     {
         return countColorPieces(gameboard, originalplayer) - countColorPieces(gameboard, (!(originalplayer - 1)) + 1);

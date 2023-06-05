@@ -5,19 +5,16 @@
 using namespace std;
 #define SIZE 6
 string mixhue_ret;
-int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int depth, int d, int prune, int iteration);
+int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int depth, int d, int alpha, int beta, int iteration);
 
-int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int depth, int d, int prune, int iterations)
+int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int depth, int d, int alpha, int beta, int iterations)
 {
     // if (getValidMoves(gameboard, player).size() == 0)
     // {
     //     mixhue_ret = gameboard;
     //     return 0;
     // }
-    if (prune == -100 && player != originalplayer - 1)
-        prune = 100;
-    else if (prune == 100 && player == originalplayer - 1)
-        prune = -100;
+    // cout << gameboard << ' ' << d << endl;
     player--;
     if (d == depth)
     {
@@ -25,9 +22,9 @@ int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int d
         int wins = 0;
         for (int i = 0; i < iterations; i++)
         {
-            gameboard = randomGame(gameboard, originalplayer);
+            gameboard = randomGame(gameboard, player+1);
             double score = getScore(gameboard);
-            if (score == 1.0 && player == 1 || score == 0.0 && player == 2)
+            if (score == 1.0 && originalplayer == 1 || score == 0.0 && originalplayer == 2)
             {
                 wins++;
             }
@@ -63,19 +60,17 @@ int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int d
             }
             if (flag)
             {
-                int val = mixhue_minimaxSearch(flipPieces(gameboard, player + 1, pos), originalplayer, (!player) + 1, depth, d + 1, prune, iterations);
+                int val = mixhue_minimaxSearch(flipPieces(gameboard, player + 1, pos), originalplayer, (!player) + 1, depth, d + 1, alpha, beta, iterations);
                 if (temp.second == "")
                 {
                     temp.first = val;
                     temp.second = pos;
                     continue;
                 }
+                
                 if (player == originalplayer - 1)
                 {
-                    if (val > prune)
-                    {
-                        return prune;
-                    }
+                    alpha = max(alpha,val);
                     if (temp.first < val)
                     {
                         temp.first = val;
@@ -86,14 +81,12 @@ int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int d
                         temp.first = val;
                         temp.second = pos;
                     }
+                    if (beta <= alpha)
+                        return temp.first;
                 }
                 else
                 {
-                    if (val < prune)
-                    {
-                        return prune;
-                    }
-
+                    beta = min(beta, val);
                     if (temp.first > val)
                     {
                         temp.first = val;
@@ -104,17 +97,22 @@ int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int d
                         temp.first = val;
                         temp.second = pos;
                     }
+                    if (beta <= alpha)
+                        return temp.first;
                 }
             }
         }
     }
     if (!canmove)
     {
-        temp = {mixhue_minimaxSearch(gameboard, originalplayer, (!player) + 1, depth, d + 1, prune, iterations), ""};
+        temp = {mixhue_minimaxSearch(gameboard, originalplayer, (!player) + 1, depth, d + 1, alpha, beta, iterations), ""};
     }
     if (d == 0)
     {
+        // cout << player<<endl;
+        // cout << gameboard << endl;
         mixhue_ret = flipPieces(gameboard, player+1, temp.second);
+        // cout << mixhue_ret << endl;
     }
     return temp.first;
 }
@@ -122,7 +120,7 @@ int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int d
 string mixhue(int player, int d, int iterations, string gameboard)
 {
     srand(time(0));
-    mixhue_minimaxSearch(gameboard, player, player, d, 0, -100, iterations);
+    mixhue_minimaxSearch(gameboard, player, player, d, 0, -100, 100, iterations);
     return mixhue_ret;
 }
 #endif

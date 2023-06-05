@@ -20,11 +20,11 @@ int minimaxSearch(string gameboard, int originalplayer, int player, int depth, i
     //     mix_ret = gameboard;
     //     return 0;
     // }
+    player--;
     if (prune == -100 && player != originalplayer - 1)
         prune = 100;
     else if (prune == 100 && player == originalplayer - 1)
         prune = -100;
-    player--;
     if (d == depth)
     {
         return countColorPieces(gameboard, originalplayer) - countColorPieces(gameboard, (!(originalplayer - 1)) + 1);
