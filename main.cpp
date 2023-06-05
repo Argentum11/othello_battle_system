@@ -225,6 +225,10 @@ int main()
             {
                 same = 0;
             }
+            // if(board_str == "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"){
+            //     cout << prev_board_str <<endl;
+            //     return 0;
+            // }
             prev_board_str = board_str;
             // cout << board_str << endl;
             // for (int x  = 0; x < 6; x++)
@@ -235,6 +239,7 @@ int main()
             //     }
             //     cout << endl;
             // }
+            // cout << "=======\n";
             cout << ".";
         }
         cout << endl;

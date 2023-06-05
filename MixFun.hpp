@@ -87,7 +87,9 @@ string flipPieces(string s, int player, string pos)
     //     }
     //     cout << endl;
     // }
-    
+    // cout << player << endl;
+    if(pos=="")
+        return s;
     char board[SIZE][SIZE];
     for (int i = 0; i < SIZE; i++)
     {
