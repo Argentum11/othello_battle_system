@@ -7,24 +7,14 @@
 #include <algorithm>
 #include <string.h>
 #include <time.h>
-#include"MixFun.hpp"
+#include "MixFun.hpp"
 using namespace std;
 #define SIZE 6
 string test_ret;
 // int historyTable[6][6];
 
-int minimaxSearch_test(string gameboard, int originalplayer, int player, int depth, int d, int prune)
+int minimaxSearch_test(string gameboard, int originalplayer, int player, int depth, int d, int alpha, int beta)
 {
-    // if (getValidMoves(gameboard, player).size() == 0)
-    // {
-    //     // cout << gameboard << endl;
-    //     test_ret = gameboard;
-    //     return 0;
-    // }
-    if (prune == -100 && player != originalplayer - 1)
-        prune = 100;
-    else if (prune == 100 && player == originalplayer - 1)
-        prune = -100;
     vector<pair<int, int>> moves = getValidMoves(gameboard, player);
     player--;
     if (d == depth)
@@ -56,7 +46,7 @@ int minimaxSearch_test(string gameboard, int originalplayer, int player, int dep
     {
         pos = 'A' + moves[i].first;
         pos += 'a' + moves[i].second;
-        int val = minimaxSearch_hue(flipPieces(gameboard, player + 1, pos), originalplayer, (!player) + 1, depth, d + 1, prune);
+        int val = minimaxSearch_test(flipPieces(gameboard, player + 1, pos), originalplayer, (!player) + 1, depth, d + 1, alpha, beta);
 
         // historyTable[moves[i].first][moves[i].second] += val;
 
@@ -68,10 +58,7 @@ int minimaxSearch_test(string gameboard, int originalplayer, int player, int dep
         }
         if (player == originalplayer - 1)
         {
-            if (val > prune)
-            {
-                return prune;
-            }
+            alpha = max(alpha, val);
             if (temp.first < val)
             {
                 temp.first = val;
@@ -82,14 +69,14 @@ int minimaxSearch_test(string gameboard, int originalplayer, int player, int dep
                 temp.first = val;
                 temp.second = pos;
             }
+            if (beta <= alpha)
+            {
+                return temp.first;
+            }
         }
         else
         {
-            if (val < prune)
-            {
-                return prune;
-            }
-
+            beta = min(beta, val);
             if (temp.first > val)
             {
                 temp.first = val;
@@ -100,20 +87,23 @@ int minimaxSearch_test(string gameboard, int originalplayer, int player, int dep
                 temp.first = val;
                 temp.second = pos;
             }
+            if (beta <= alpha)
+            {
+                return temp.first;
+            }
         }
     }
     if (moves.size() == 0)
     {
-        temp = {minimaxSearch_hue(gameboard, originalplayer, (!player) + 1, depth, d + 1, prune), ""};
+        temp = {minimaxSearch_test(gameboard, originalplayer, (!player) + 1, depth, d + 1, alpha, beta), ""};
     }
     if (d == 0)
     {
         // cout << flipPieces(gameboard, player, temp.second) << endl;
-        test_ret = flipPieces(gameboard, player+1, temp.second);
+        test_ret = flipPieces(gameboard, player + 1, temp.second);
     }
     return temp.first;
 }
-
 
 string testmain(int player, int depth, string gameboard)
 {
@@ -131,8 +121,7 @@ string testmain(int player, int depth, string gameboard)
         return test_ret;
     }
 
-    minimaxSearch_test(gameboard, player, player, depth, 0, -100);
-    
+    minimaxSearch_test(gameboard, player, player, depth, 0, -1000, 1000);
 
     cout << test_ret << endl;
     return test_ret;

@@ -22,7 +22,7 @@ int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int d
         int wins = 0;
         for (int i = 0; i < iterations; i++)
         {
-            gameboard = randomGame(gameboard, player+1);
+            gameboard = randomGame(gameboard, player + 1);
             double score = getScore(gameboard);
             if (score == 1.0 && originalplayer == 1 || score == 0.0 && originalplayer == 2)
             {
@@ -67,10 +67,10 @@ int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int d
                     temp.second = pos;
                     continue;
                 }
-                
+
                 if (player == originalplayer - 1)
                 {
-                    alpha = max(alpha,val);
+                    alpha = max(alpha, val);
                     if (temp.first < val)
                     {
                         temp.first = val;
@@ -81,9 +81,8 @@ int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int d
                         temp.first = val;
                         temp.second = pos;
                     }
-                    if (beta <= alpha){
-
-                        // mixhue_ret = flipPieces(gameboard, player+1, temp.second);
+                    if (beta <= alpha)
+                    {
                         return temp.first;
                     }
                 }
@@ -100,8 +99,8 @@ int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int d
                         temp.first = val;
                         temp.second = pos;
                     }
-                    if (beta <= alpha){
-                        // mixhue_ret = flipPieces(gameboard, player+1, temp.second);
+                    if (beta <= alpha)
+                    {
                         return temp.first;
                     }
                 }
@@ -116,7 +115,7 @@ int mixhue_minimaxSearch(string gameboard, int originalplayer, int player, int d
     {
         // cout << player<<endl;
         // cout << gameboard << endl;
-        mixhue_ret = flipPieces(gameboard, player+1, temp.second);
+        mixhue_ret = flipPieces(gameboard, player + 1, temp.second);
         // cout << mixhue_ret << endl;
     }
     return temp.first;

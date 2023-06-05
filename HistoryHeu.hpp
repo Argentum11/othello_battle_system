@@ -7,26 +7,16 @@
 #include <algorithm>
 #include <string.h>
 #include <time.h>
-#include"MixFun.hpp"
+#include "MixFun.hpp"
 using namespace std;
 #define SIZE 6
 string history_heu_ret;
 int historyTable[6][6];
 
-int minimaxSearch_hue(string gameboard, int originalplayer, int player, int depth, int d, int prune)
+int minimaxSearch_hue(string gameboard, int originalplayer, int player, int depth, int d, int alpha, int beta)
 {
-    // if (getValidMoves(gameboard, player).size() == 0)
-    // {
-    //     // cout << gameboard << endl;
-    //     history_heu_ret = gameboard;
-    //     return 0;
-    // }
     vector<pair<int, int>> moves = getValidMoves(gameboard, player);
     player--;
-    if (prune == -100 && player != originalplayer - 1)
-        prune = 100;
-    else if (prune == 100 && player == originalplayer - 1)
-        prune = -100;
     if (d == depth)
     {
         return countColorPieces(gameboard, originalplayer) - countColorPieces(gameboard, (!(originalplayer - 1)) + 1);
@@ -56,7 +46,7 @@ int minimaxSearch_hue(string gameboard, int originalplayer, int player, int dept
     {
         pos = 'A' + moves[i].first;
         pos += 'a' + moves[i].second;
-        int val = minimaxSearch_hue(flipPieces(gameboard, player + 1, pos), originalplayer, (!player) + 1, depth, d + 1, prune);
+        int val = minimaxSearch_hue(flipPieces(gameboard, player + 1, pos), originalplayer, (!player) + 1, depth, d + 1, alpha, beta);
 
         historyTable[moves[i].first][moves[i].second] += val;
 
@@ -68,10 +58,7 @@ int minimaxSearch_hue(string gameboard, int originalplayer, int player, int dept
         }
         if (player == originalplayer - 1)
         {
-            if (val > prune)
-            {
-                return prune;
-            }
+            alpha = max(alpha, val);
             if (temp.first < val)
             {
                 temp.first = val;
@@ -82,13 +69,14 @@ int minimaxSearch_hue(string gameboard, int originalplayer, int player, int dept
                 temp.first = val;
                 temp.second = pos;
             }
+            if (beta <= alpha)
+            {
+                return temp.first;
+            }
         }
         else
         {
-            if (val < prune)
-            {
-                return prune;
-            }
+            beta = min(beta, val);
 
             if (temp.first > val)
             {
@@ -100,20 +88,23 @@ int minimaxSearch_hue(string gameboard, int originalplayer, int player, int dept
                 temp.first = val;
                 temp.second = pos;
             }
+            if (beta <= alpha)
+            {
+                return temp.first;
+            }
         }
     }
     if (moves.size() == 0)
     {
-        temp = {minimaxSearch_hue(gameboard, originalplayer, (!player) + 1, depth, d + 1, prune), ""};
+        temp = {minimaxSearch_hue(gameboard, originalplayer, (!player) + 1, depth, d + 1, alpha, beta), ""};
     }
     if (d == 0)
     {
         // cout << flipPieces(gameboard, player, temp.second) << endl;
-        history_heu_ret = flipPieces(gameboard, player+1, temp.second);
+        history_heu_ret = flipPieces(gameboard, player + 1, temp.second);
     }
     return temp.first;
 }
-
 
 string history_heu(int player, int depth, string gameboard)
 {
@@ -131,8 +122,7 @@ string history_heu(int player, int depth, string gameboard)
         return history_heu_ret;
     }
 
-    minimaxSearch_hue(gameboard, player, player, depth, 0, -100);
-    
+    minimaxSearch_hue(gameboard, player, player, depth, 0, -1000, 1000);
 
     cout << history_heu_ret << endl;
     return history_heu_ret;

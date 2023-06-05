@@ -12,7 +12,7 @@ using namespace std;
 #define SIZE 6
 string mix_ret;
 
-int minimaxSearch(string gameboard, int originalplayer, int player, int depth, int d, int prune)
+int minimaxSearch(string gameboard, int originalplayer, int player, int depth, int d, int alpha, int beta)
 {
     // if (getValidMoves(gameboard, player).size() == 0)
     // {
@@ -21,10 +21,6 @@ int minimaxSearch(string gameboard, int originalplayer, int player, int depth, i
     //     return 0;
     // }
     player--;
-    if (prune == -100 && player != originalplayer - 1)
-        prune = 100;
-    else if (prune == 100 && player == originalplayer - 1)
-        prune = -100;
     if (d == depth)
     {
         return countColorPieces(gameboard, originalplayer) - countColorPieces(gameboard, (!(originalplayer - 1)) + 1);
@@ -58,7 +54,7 @@ int minimaxSearch(string gameboard, int originalplayer, int player, int depth, i
             }
             if (flag)
             {
-                int val = minimaxSearch(flipPieces(gameboard, player + 1, pos), originalplayer, (!player) + 1, depth, d + 1, prune);
+                int val = minimaxSearch(flipPieces(gameboard, player + 1, pos), originalplayer, (!player) + 1, depth, d + 1, alpha, beta);
                 if (temp.second == "")
                 {
                     temp.first = val;
@@ -67,10 +63,7 @@ int minimaxSearch(string gameboard, int originalplayer, int player, int depth, i
                 }
                 if (player == originalplayer - 1)
                 {
-                    if (val > prune)
-                    {
-                        return prune;
-                    }
+                    alpha = max(alpha, val);
                     if (temp.first < val)
                     {
                         temp.first = val;
@@ -81,13 +74,14 @@ int minimaxSearch(string gameboard, int originalplayer, int player, int depth, i
                         temp.first = val;
                         temp.second = pos;
                     }
+                    if (beta <= alpha)
+                    {
+                        return temp.first;
+                    }
                 }
                 else
                 {
-                    if (val < prune)
-                    {
-                        return prune;
-                    }
+                    beta = min(beta, val);
 
                     if (temp.first > val)
                     {
@@ -99,13 +93,17 @@ int minimaxSearch(string gameboard, int originalplayer, int player, int depth, i
                         temp.first = val;
                         temp.second = pos;
                     }
+                    if (beta <= alpha)
+                    {
+                        return temp.first;
+                    }
                 }
             }
         }
     }
     if (!canmove)
     {
-        temp = {minimaxSearch(gameboard, originalplayer, (!player) + 1, depth, d + 1, prune), ""};
+        temp = {minimaxSearch(gameboard, originalplayer, (!player) + 1, depth, d + 1, alpha, beta), ""};
     }
     if (d == 0)
     {
@@ -181,7 +179,7 @@ string mix_depth(int player, int depth, int iteration, int order, string gameboa
 
         if (countRound(gameboard) < SIZE * SIZE / 2)
         {
-            minimaxSearch(gameboard, player, player, depth, 0, -100);
+            minimaxSearch(gameboard, player, player, depth, 0, -1000, 1000);
         }
         else
         {
@@ -192,7 +190,7 @@ string mix_depth(int player, int depth, int iteration, int order, string gameboa
     {
         if (countRound(gameboard) > SIZE * SIZE / 2)
         {
-            minimaxSearch(gameboard, player, player, depth, 0, -100);
+            minimaxSearch(gameboard, player, player, depth, 0, -1000, 1000);
         }
         else
         {
