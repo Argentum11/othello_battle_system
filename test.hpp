@@ -123,7 +123,7 @@ string testmain(int player, int depth, string gameboard)
 
     minimaxSearch_test(gameboard, player, player, depth, 0, -1000, 1000);
 
-    cout << test_ret << endl;
+    // cout << test_ret << endl;
     return test_ret;
 }
 #endif

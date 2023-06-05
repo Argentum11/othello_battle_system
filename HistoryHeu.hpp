@@ -71,6 +71,7 @@ int minimaxSearch_hue(string gameboard, int originalplayer, int player, int dept
             }
             if (beta <= alpha)
             {
+                historyTable[moves[i].first][moves[i].second] += d * d;
                 return temp.first;
             }
         }
@@ -90,6 +91,7 @@ int minimaxSearch_hue(string gameboard, int originalplayer, int player, int dept
             }
             if (beta <= alpha)
             {
+                historyTable[moves[i].first][moves[i].second] += d * d;
                 return temp.first;
             }
         }
@@ -97,6 +99,11 @@ int minimaxSearch_hue(string gameboard, int originalplayer, int player, int dept
     if (moves.size() == 0)
     {
         temp = {minimaxSearch_hue(gameboard, originalplayer, (!player) + 1, depth, d + 1, alpha, beta), ""};
+    }
+    else
+    {
+
+        historyTable[temp.second[0] - 'A'][temp.second[1] - 'a'] += d * d;
     }
     if (d == 0)
     {
@@ -124,7 +131,7 @@ string history_heu(int player, int depth, string gameboard)
 
     minimaxSearch_hue(gameboard, player, player, depth, 0, -1000, 1000);
 
-    cout << history_heu_ret << endl;
+    // cout << history_heu_ret << endl;
     return history_heu_ret;
 }
 #endif
